@@ -7,6 +7,15 @@ import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { FormFieldProps, FormData } from "./AddCasualtyForm.types";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const FormField: React.FC<FormFieldProps> = ({
   label,
@@ -51,6 +60,7 @@ const FormField: React.FC<FormFieldProps> = ({
 const AddCasualtyForm: React.FC = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("personal");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     age: "",
@@ -90,8 +100,55 @@ const AddCasualtyForm: React.FC = () => {
     }
   };
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    router.push("/");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      const response = await fetch("/api/casuality", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          age: formData.age,
+          fathersName: formData.fathersName,
+          mothersName: formData.mothersName,
+          image: formData.image,
+          permanentAddress: formData.permanentAddress,
+          incidentLocation: formData.incidentLocation,
+          dateOfIncident: formData.dateOfIncident,
+          incidentDescription: formData.incidentDescription,
+          nationality: formData.nationality,
+          dateOfBirth: formData.dateOfBirth,
+          deathCertificate: formData.deathCertificate,
+          nidNumber: formData.nidNumber,
+          scenePhotos: formData.scenePhotos,
+          fillerName: formData.fillerName,
+          fillerPhone: formData.fillerPhone,
+          fillerInstitution: formData.fillerInstitution,
+          fillerAddress: formData.fillerAddress,
+        }),
+      });
+
+      if (response.ok) {
+        // const agent = await response.json();
+        // setAgents([...agents, agent]);
+        // setEditAgentId(undefined);
+        // setEditAgentName("");
+        // setEditAgentInstructions("");
+        // setAgentDescription("");
+        // setIsCreating(false);
+        // setShowModal(false);
+      } else {
+        console.error("An error occurred:", await response.text());
+      }
+    } catch (error) {
+      console.error("Failed to fetch Agent:", error);
+    }
     console.log(formData);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     router.push("/casualty-added");
@@ -333,6 +390,20 @@ const AddCasualtyForm: React.FC = () => {
           )}
         </div>
       </form>
+      <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Submission Successful</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your information has been submitted successfully. It will be added
+              to our records after review. Thank you for your contribution.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={handleModalClose}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 };
