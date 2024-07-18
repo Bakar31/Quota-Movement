@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { AlertTriangle, Users, Calendar, PlusCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,41 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-const AddCasualtyForm = () => {
-  return (
-    <div className="grid gap-4 py-4">
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="name" className="text-right">
-          Name
-        </Label>
-        <Input id="name" className="col-span-3" />
-      </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="age" className="text-right">
-          Age
-        </Label>
-        <Input id="age" type="number" className="col-span-3" />
-      </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="date" className="text-right">
-          Date of Incident
-        </Label>
-        <Input id="date" type="date" className="col-span-3" />
-      </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="location" className="text-right">
-          Location
-        </Label>
-        <Input id="location" className="col-span-3" />
-      </div>
-    </div>
-  );
-};
+import AddCasualtyForm from "../AddCasualtyForm/AddCaualtyForm";
 
 const LandingPage = () => {
+  const router = useRouter();
   const [casualties, setCasualties] = useState(50);
   const lastUpdated = "2024-07-18";
 
@@ -78,22 +48,14 @@ const LandingPage = () => {
             </p>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="mt-4 bg-red-500 hover:bg-red-600">
+                <Button
+                  className="mt-4 bg-red-500 hover:bg-red-600"
+                  onClick={() => router.push("/add-martyr-info")}
+                >
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Add Casualty Information
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add Casualty Information</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit}>
-                  <AddCasualtyForm />
-                  <div className="flex justify-end mt-4">
-                    <Button type="submit">Submit</Button>
-                  </div>
-                </form>
-              </DialogContent>
             </Dialog>
           </CardContent>
         </Card>
@@ -108,9 +70,9 @@ const LandingPage = () => {
             </CardHeader>
             <CardContent>
               <p>
-                The student movement in Bangladesh is fighting for [brief
-                description of goals]. This tracker aims to bring attention to
-                the human cost of the ongoing situation.
+                The student movement in Bangladesh is fighting for removing
+                unfair Quota system. This tracker aims to bring attention to the
+                human cost of the ongoing situation.
               </p>
             </CardContent>
           </Card>
