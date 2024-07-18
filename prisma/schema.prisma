@@ -22,3 +22,31 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
+
+enum State {
+  pending
+  accepted
+}
+
+model Casualty {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  age                 Int
+  fathersName         String
+  mothersName         String
+  image               String?
+  permanentAddress    String
+  incidentLocation    String
+  dateOfIncident      DateTime
+  incidentDescription String
+  nationality         String
+  dateOfBirth         DateTime
+  deathCertificate    String
+  nidNumber           String
+  scenePhotos         Json?
+  fillerName          String
+  fillerPhone         String
+  fillerInstitution   String?
+  fillerAddress       String
+  state               State    @default(pending)
+}

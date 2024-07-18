@@ -16,6 +16,7 @@ const FormField: React.FC<FormFieldProps> = ({
   onChange,
   required = false,
   className = "",
+  multiple = false,
 }) => (
   <div className="mb-4">
     <Label
@@ -41,6 +42,7 @@ const FormField: React.FC<FormFieldProps> = ({
         onChange={onChange}
         required={required}
         className={`mt-1 block w-full ${className}`}
+        multiple={multiple}
       />
     )}
   </div>
@@ -54,6 +56,7 @@ const AddCasualtyForm: React.FC = () => {
     age: "",
     fathersName: "",
     mothersName: "",
+    image: null,
     permanentAddress: "",
     incidentLocation: "",
     dateOfIncident: "",
@@ -62,7 +65,7 @@ const AddCasualtyForm: React.FC = () => {
     dateOfBirth: "",
     deathCertificate: "",
     nidNumber: "",
-    scenePhotos: null,
+    scenePhotos: [],
     fillerName: "",
     fillerPhone: "",
     fillerInstitution: "",
@@ -73,13 +76,18 @@ const AddCasualtyForm: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value, type } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]:
-        type === "file"
-          ? (e.target as HTMLInputElement).files?.[0] || null
-          : value,
-    }));
+    if (type === "file" && e.target instanceof HTMLInputElement) {
+      const files = e.target.files;
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: files ? (files.length > 1 ? Array.from(files) : files[0]) : null,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -96,7 +104,8 @@ const AddCasualtyForm: React.FC = () => {
           formData.name &&
           formData.age &&
           formData.fathersName &&
-          formData.mothersName
+          formData.mothersName &&
+          formData.image
         );
       case "incident":
         return (
@@ -199,6 +208,20 @@ const AddCasualtyForm: React.FC = () => {
               value={formData.nidNumber}
               onChange={handleChange}
             />
+            <div className="mb-4">
+              <Label
+                htmlFor="image"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Image
+              </Label>
+              <Input
+                id="image"
+                type="file"
+                onChange={handleChange}
+                className="mt-1 block w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="incident" className="space-y-4">
@@ -243,6 +266,7 @@ const AddCasualtyForm: React.FC = () => {
                 type="file"
                 onChange={handleChange}
                 className="mt-1 block w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                multiple
               />
             </div>
           </TabsContent>

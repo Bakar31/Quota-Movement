@@ -3,27 +3,12 @@ import { useRouter } from "next/router";
 import { AlertTriangle, Users, Calendar, PlusCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import AddCasualtyForm from "../AddCasualtyForm/AddCaualtyForm";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 const LandingPage = () => {
   const router = useRouter();
   const [casualties, setCasualties] = useState(50);
   const lastUpdated = "2024-07-18";
-
-  const handleSubmit = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    // Here you would typically send the form data to your backend
-    // For this example, we'll just increment the casualty count
-    setCasualties(casualties + 1);
-    // Close the dialog (you might want to add state for this)
-  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col">

@@ -3,6 +3,7 @@ export interface FormData {
   age: string;
   fathersName: string;
   mothersName: string;
+  image: File | null | string;
   permanentAddress: string;
   incidentLocation: string;
   dateOfIncident: string;
@@ -11,7 +12,7 @@ export interface FormData {
   dateOfBirth: string;
   deathCertificate: string;
   nidNumber: string;
-  scenePhotos: File | null;
+  scenePhotos: File[] | null;
   fillerName: string;
   fillerPhone: string;
   fillerInstitution: string;
@@ -28,4 +29,5 @@ export interface FormFieldProps {
   ) => void;
   required?: boolean;
   className?: string;
+  multiple?: boolean;
 }
